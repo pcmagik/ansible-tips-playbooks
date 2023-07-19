@@ -1,46 +1,26 @@
-- name: Install Docker engine
-  hosts: "*"
-  become: true
-  tasks:
-  - name: install dependencies
-    apt:
-      name: 
-       - ca-certificates 
-       - lsb-release
-       - apt-transport-https 
-       - ca-certificates 
-       - software-properties-common
-       - curl 
-       - gnupg 
-       - lsb-release
-      state: present
-      update_cache: true
-    become: true
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
 
-  - name: add GPG key
-    apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
-      state: present
+    - name: Add Docker GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
 
-  - name: add docker repository to apt
-    apt_repository:
-      filename: docker 
-      repo: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-      state: present
+- name: Add Docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    state: present
 
-  - name: install docker engine
-    apt:
-      name: 
-        - docker.ce 
-        - docker-ce-cli 
-        - containerd.io
-        - docker compose
-        - docker-compose-plugin
-        - docker-buildx-plugin
-      state: present
-      update_cache: true
-    become: true
+- name: Update apt cache and install Docker
+  apt:
+    name: docker-ce
+    update_cache: yes
+    state: present
 
-  - name: test docker
-    command: docker info
-    become: true
