@@ -31,11 +31,11 @@
   - name: install docker engine
     apt:
       name: 
-        - docker ce 
-        - docker ce cli 
+        - docker.io 
+        - docker-ce-cli 
         - containerd.io
         - docker compose
-        - docker compose plugin
+        - docker-compose-plugin
       state: present
       update_cache: true
     become: true
