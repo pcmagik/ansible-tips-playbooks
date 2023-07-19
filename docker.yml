@@ -25,17 +25,21 @@
   - name: add docker repository to apt
     apt_repository:
       filename: docker 
-      repo: deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+      repo: \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \ 
+      #deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
       state: present
 
   - name: install docker engine
     apt:
       name: 
-        - docker.io 
+        - docker.ce 
         - docker-ce-cli 
         - containerd.io
         - docker compose
         - docker-compose-plugin
+        - docker-buildx-plugin
       state: present
       update_cache: true
     become: true
