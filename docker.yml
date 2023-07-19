@@ -1,5 +1,5 @@
 ---
-- hosts: your_host
+- hosts: "*"
   become: yes
   tasks:
   - name: Update apt repo
