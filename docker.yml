@@ -6,6 +6,10 @@
     apt:
       name: 
        - ca-certificates 
+       - lsb-release
+       - apt-transport-https 
+       - ca-certificates 
+       - software-properties-common
        - curl 
        - gnupg 
        - lsb-release
@@ -21,15 +25,17 @@
   - name: add docker repository to apt
     apt_repository:
       filename: docker 
-      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+      repo: deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
       state: present
 
   - name: install docker engine
     apt:
       name: 
-        - docker-ce 
-        - docker-ce-cli 
+        - docker ce 
+        - docker ce cli 
         - containerd.io
+        - docker compose
+        - docker compose plugin
       state: present
       update_cache: true
     become: true
