@@ -1,7 +1,7 @@
 ---
 - name: Install Python 3 if not present
-  hosts: all
-  become: yes
+- hosts:  "*"
+  become: true
   tasks:
     - name: Check if Python 3 is installed
       command: python3 --version
