@@ -1,6 +1,6 @@
 ---
 - hosts:  "*"
-  become: true
+  become: yes
   tasks:
     - name: Check if Python 3 is installed
       command: python3 --version
@@ -12,3 +12,17 @@
         name: python3
         state: present
       when: python3_check.rc != 0
+
+    - name: Remove older Python versions
+      apt:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - python2
+        - python2.7
+      ignore_errors: true
+
+    - name: Update alternatives to set Python 3 as the default
+      alternatives:
+        name: python
+        path: /usr/bin/python3
