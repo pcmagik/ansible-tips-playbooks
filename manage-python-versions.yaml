@@ -1,0 +1,34 @@
+---
+- name: Manage Python versions
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: Check if Python 3 is installed
+      command: python3 --version
+      register: python3_check
+      ignore_errors: true
+
+    - name: Install Python 3
+      apt:
+        name: python3
+        state: present
+      when: python3_check.rc != 0
+
+    - name: Remove older Python versions
+      apt:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - python2
+        - python2.7
+      ignore_errors: true
+
+    - name: Check if Python alternative exists
+      shell: update-alternatives --list python || true
+      register: python_alternative
+      ignore_errors: true
+
+    - name: Manually set Python 3 as the default
+      shell: update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+      when: '"python3" not in python_alternative.stdout'
+      ignore_errors: true
