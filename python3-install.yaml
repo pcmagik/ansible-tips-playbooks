@@ -1,5 +1,4 @@
 ---
-- name: Install Python 3 if not present
 - hosts:  "*"
   become: true
   tasks:
