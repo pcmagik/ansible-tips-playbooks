@@ -6,3 +6,16 @@ ssh-keygen -f "/home/pcmagik/.ssh/known_hosts" -R "192.168.1.72"
 ssh-keygen -f "/home/pcmagik/.ssh/known_hosts" -R "192.168.1.73"
 ssh-keygen -f "/home/pcmagik/.ssh/known_hosts" -R "192.168.1.74"
 ssh-keygen -f "/home/pcmagik/.ssh/known_hosts" -R "192.168.1.75"
+
+# Aby unikać pytania o potwierdzenie podczas łączenia się z nowym hostem, możesz dodać opcję -o StrictHostKeyChecking=no do polecenia ssh lub ansible-playbook. Oto jak możesz to zrobić z ansible-playbook:
+# Ustawienie opcji w konfiguracji Ansible
+# Otwórz lub utwórz plik konfiguracyjny Ansible (domyślnie ansible.cfg w katalogu, z którego uruchamiasz ansible-playbook) i dodaj lub zaktualizuj następujące ustawienia:
+
+host_key_checking = False
+
+# Ustawienie opcji w poleceniu Ansible
+# Możesz również dodać opcję ANSIBLE_HOST_KEY_CHECKING bezpośrednio przed poleceniem ansible-playbook:
+
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
+
+# Ostrzeżenie: Wyłączenie sprawdzania klucza hosta może zwiększyć ryzyko ataków "man-in-the-middle". Używaj tej opcji tylko w zaufanych sieciach i gdy jesteś pewien, że hosty są bezpieczne.
