@@ -1,6 +1,6 @@
 # ansible.md
 
-# When vm's have diffrent ssh_figertip
+# When vm's have diffrent ssh_figerprint
 ssh-keygen -f "/home/pcmagik/.ssh/known_hosts" -R "192.168.1.71"
 ssh-keygen -f "/home/pcmagik/.ssh/known_hosts" -R "192.168.1.72"
 ssh-keygen -f "/home/pcmagik/.ssh/known_hosts" -R "192.168.1.73"
